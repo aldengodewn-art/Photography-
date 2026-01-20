@@ -1,0 +1,562 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lumen Studio — Photography</title>
+  <style>
+    :root {
+      --bg: #0f1115;
+      --panel: #151922;
+      --text: #e9edf3;
+      --muted: #a9b2c3;
+      --accent: #7cc6ff;
+      --accent-2: #ffb86b;
+      --danger: #ff6b6b;
+      --success: #7bd88f;
+      --shadow: 0 10px 30px rgba(0,0,0,0.35);
+      --radius: 14px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      background: radial-gradient(1200px 600px at 80% -10%, #1a2030 0%, #0f1115 60%, #0b0d11 100%);
+      color: var(--text);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+      line-height: 1.6;
+    }
+
+    /* Header */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: saturate(1.2) blur(8px);
+      background: rgba(15,17,21,0.65);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .nav {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text);
+    }
+    .brand-logo {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: conic-gradient(from 210deg, #7cc6ff, #ffb86b, #7bd88f, #7cc6ff);
+      box-shadow: 0 0 0 2px rgba(255,255,255,0.08), var(--shadow);
+    }
+    .brand-name {
+      font-weight: 700;
+      letter-spacing: 0.4px;
+    }
+    .menu {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+    .menu a {
+      color: var(--muted);
+      text-decoration: none;
+      font-weight: 500;
+      padding: 8px 10px;
+      border-radius: 8px;
+      transition: color .2s ease, background .2s ease;
+    }
+    .menu a:hover { color: var(--text); background: rgba(255,255,255,0.06); }
+    .btn {
+      padding: 10px 16px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+      color: var(--text);
+      cursor: pointer;
+      transition: transform .08s ease, box-shadow .2s ease, border-color .2s ease;
+    }
+    .btn:hover { box-shadow: var(--shadow); border-color: rgba(255,255,255,0.22); }
+    .btn:active { transform: translateY(1px); }
+    .btn-accent {
+      border: none;
+      background: linear-gradient(135deg, var(--accent), #9ad8ff 40%, var(--accent-2) 100%);
+      color: #0b0d11;
+      font-weight: 700;
+    }
+
+    /* Hero */
+    .hero {
+      max-width: 1200px;
+      margin: 40px auto 24px;
+      padding: 0 24px;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 28px;
+      align-items: center;
+    }
+    .hero-card {
+      position: relative;
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: var(--shadow);
+      min-height: 420px;
+    }
+    .hero-card::before {
+      content: "";
+      position: absolute; inset: 0;
+      background-image:
+        radial-gradient(1200px 500px at 80% 0%, rgba(124,198,255,0.25), transparent 60%),
+        radial-gradient(800px 400px at 10% 100%, rgba(255,184,107,0.25), transparent 60%);
+      pointer-events: none;
+    }
+    .hero-media {
+      position: absolute; inset: 0;
+      background:
+        url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1600&auto=format&fit=crop') center/cover no-repeat;
+      filter: saturate(1.1) contrast(1.05);
+    }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(10,12,16,0.35) 0%, rgba(10,12,16,0.65) 70%, rgba(10,12,16,0.85) 100%);
+    }
+    .hero-content {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 28px;
+    }
+    .eyebrow {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .hero h1 {
+      margin: 0 0 10px;
+      font-size: 42px;
+      line-height: 1.1;
+      letter-spacing: 0.2px;
+      text-shadow: 0 2px 18px rgba(0,0,0,0.45);
+    }
+    .hero p {
+      margin: 0 0 16px;
+      color: var(--muted);
+      max-width: 60ch;
+    }
+    .cta-row { display: flex; gap: 12px; flex-wrap: wrap; }
+
+    .hero-side {
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: var(--shadow);
+      padding: 22px;
+    }
+    .stat {
+      display: grid;
+      grid-template-columns: 56px 1fr;
+      gap: 14px;
+      align-items: center;
+      padding: 12px 10px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      margin-bottom: 12px;
+    }
+    .stat .icon {
+      width: 56px; height: 56px; border-radius: 12px;
+      background: linear-gradient(135deg, rgba(124,198,255,0.25), rgba(255,184,107,0.25));
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+    .stat h3 { margin: 0; font-size: 16px; }
+    .stat p { margin: 4px 0 0; color: var(--muted); font-size: 14px; }
+
+    /* Gallery */
+    .section {
+      max-width: 1200px;
+      margin: 24px auto;
+      padding: 0 24px;
+    }
+    .section-header {
+      display: flex; align-items: end; justify-content: space-between;
+      margin-bottom: 14px;
+    }
+    .section-header h2 { margin: 0; font-size: 24px; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 14px;
+    }
+    .card {
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #0b0d11;
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: var(--shadow);
+      min-height: 220px;
+    }
+    .card img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: saturate(1.05) contrast(1.05);
+      transition: transform .35s ease;
+    }
+    .card:hover img { transform: scale(1.04); }
+    .card .label {
+      position: absolute; left: 12px; bottom: 12px;
+      padding: 6px 10px;
+      border-radius: 10px;
+      background: rgba(10,12,16,0.55);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: var(--text);
+      font-size: 12px;
+      backdrop-filter: blur(6px);
+    }
+    .span-6 { grid-column: span 6; }
+    .span-4 { grid-column: span 4; }
+    .span-3 { grid-column: span 3; }
+    .span-9 { grid-column: span 9; }
+
+    /* Footer */
+    .footer {
+      margin-top: 40px;
+      padding: 24px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      background: rgba(15,17,21,0.5);
+    }
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 16px;
+      align-items: center;
+    }
+    .footer small { color: var(--muted); }
+
+    /* Login Modal */
+    .modal-backdrop {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(6px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 24px;
+    }
+    .modal {
+      width: 100%;
+      max-width: 420px;
+      border-radius: 16px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      border: 1px solid rgba(255,255,255,0.12);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .modal-header {
+      padding: 18px 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .modal-title { font-weight: 700; }
+    .close {
+      border: none; background: transparent; color: var(--muted);
+      font-size: 20px; cursor: pointer; padding: 6px;
+    }
+    .modal-body { padding: 20px; }
+    .field {
+      margin-bottom: 14px;
+    }
+    .field label {
+      display: block; margin-bottom: 6px; color: var(--muted); font-size: 13px;
+    }
+    .input {
+      width: 100%;
+      padding: 12px 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(10,12,16,0.6);
+      color: var(--text);
+      outline: none;
+      transition: border-color .2s ease, box-shadow .2s ease;
+    }
+    .input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(124,198,255,0.2);
+    }
+    .helper {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: 6px; color: var(--muted); font-size: 12px;
+    }
+    .helper a { color: var(--accent); text-decoration: none; }
+    .error { color: var(--danger); font-size: 13px; display: none; margin-top: 8px; }
+    .success { color: var(--success); font-size: 13px; display: none; margin-top: 8px; }
+
+    /* Responsive */
+    @media (max-width: 980px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero-card { min-height: 360px; }
+      .grid { grid-template-columns: repeat(6, 1fr); }
+      .span-9 { grid-column: span 6; }
+      .span-6 { grid-column: span 6; }
+      .span-4 { grid-column: span 3; }
+      .span-3 { grid-column: span 3; }
+    }
+    @media (max-width: 560px) {
+      .menu { gap: 10px; }
+      .hero h1 { font-size: 32px; }
+      .grid { grid-template-columns: repeat(4, 1fr); }
+      .span-4 { grid-column: span 4; }
+      .span-3 { grid-column: span 4; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <nav class="nav">
+      <a href="#" class="brand">
+        <span class="brand-logo" aria-hidden="true"></span>
+        <span class="brand-name">Lumen Studio</span>
+      </a>
+      <div class="menu">
+        <a href="#work">Work</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+        <button class="btn" id="openLogin">Log in</button>
+        <button class="btn btn-accent">Book a session</button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-card">
+      <div class="hero-media" role="img" aria-label="Portrait of a woman in soft studio light"></div>
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <span class="eyebrow">Portrait • Editorial • Weddings</span>
+        <h1>Photography that feels like memory—crafted in light.</h1>
+        <p>From quiet portraits to kinetic weddings, we chase honest moments and cinematic frames. Explore recent work or book a session tailored to your story.</p>
+        <div class="cta-row">
+          <a href="#work" class="btn btn-accent">View portfolio</a>
+          <button class="btn" id="openLoginHero">Client login</button>
+        </div>
+      </div>
+    </div>
+
+    <aside class="hero-side">
+      <div class="stat">
+        <div class="icon"></div>
+        <div>
+          <h3>Featured in</h3>
+          <p>Analog Journal, Frame & Form, The Wedding Edit</p>
+        </div>
+      </div>
+      <div class="stat">
+        <div class="icon"></div>
+        <div>
+          <h3>Turnaround</h3>
+          <p>48–72 hours for previews, 2–3 weeks for full galleries</p>
+        </div>
+      </div>
+      <div class="stat">
+        <div class="icon"></div>
+        <div>
+          <h3>Locations</h3>
+          <p>Sabah • Borneo • Destination shoots on request</p>
+        </div>
+      </div>
+    </aside>
+  </section>
+
+  <!-- Gallery -->
+  <section id="work" class="section">
+    <div class="section-header">
+      <h2>Recent work</h2>
+      <a href="#" class="btn">See all collections</a>
+    </div>
+    <div class="grid">
+      <figure class="card span-6">
+        <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=1600&auto=format&fit=crop" alt="Couple dancing under string lights at dusk" />
+        <figcaption class="label">Weddings • Golden hour</figcaption>
+      </figure>
+      <figure class="card span-6">
+        <img src="https://images.unsplash.com/photo-1503342217505-b0a15cf704d6?q=80&w=1600&auto=format&fit=crop" alt="Editorial portrait with dramatic shadow" />
+        <figcaption class="label">Editorial • Shadow play</figcaption>
+      </figure>
+      <figure class="card span-4">
+        <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=1600&auto=format&fit=crop" alt="Landscape of misty mountains at sunrise" />
+        <figcaption class="label">Travel • Sunrise</figcaption>
+      </figure>
+      <figure class="card span-4">
+        <img src="https://images.unsplash.com/photo-1499084732479-de2c02d45fc4?q=80&w=1600&auto=format&fit=crop" alt="Musician performing on stage with neon lights" />
+        <figcaption class="label">Music • Neon</figcaption>
+      </figure>
+      <figure class="card span-4">
+        <img src="https://images.unsplash.com/photo-1520975916090-3105956dac38?q=80&w=1600&auto=format&fit=crop" alt="Minimal still life with soft light" />
+        <figcaption class="label">Studio • Still life</figcaption>
+      </figure>
+      <figure class="card span-9">
+        <img src="https://images.unsplash.com/photo-1496307042754-b4aa456c4a2d?q=80&w=1600&auto=format&fit=crop" alt="Bride walking through forest path" />
+        <figcaption class="label">Weddings • Forest walk</figcaption>
+      </figure>
+      <figure class="card span-3">
+        <img src="https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?q=80&w=1600&auto=format&fit=crop" alt="Black and white portrait close-up" />
+        <figcaption class="label">Portrait • B&W</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section id="about" class="section">
+    <div class="section-header">
+      <h2>About the studio</h2>
+    </div>
+    <p style="color: var(--muted); max-width: 70ch;">
+      Lumen Studio is a small team of photographers and editors who believe in patient storytelling and intentional craft.
+      We blend natural light with subtle direction—so your images feel lived-in, not staged. Based in Sabah, traveling worldwide.
+    </p>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" class="section">
+    <div class="section-header">
+      <h2>Get in touch</h2>
+    </div>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 18px;">
+      <div class="hero-side">
+        <p style="color: var(--muted); margin-top: 0;">
+          Tell us about your shoot—date, location, vibe. We’ll reply within 24 hours with availability and a tailored quote.
+        </p>
+        <a href="#" class="btn btn-accent">Start a booking</a>
+      </div>
+      <div class="hero-side">
+        <p style="color: var(--muted); margin-top: 0;">
+          Existing client? Access your private gallery, downloads, and invoices.
+        </p>
+        <button class="btn" id="openLoginContact">Open client login</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <small>© <span id="year"></span> Lumen Studio. All rights reserved.</small>
+      <div style="display:flex; gap:10px;">
+        <a href="#" class="menu-link" style="color: var(--muted); text-decoration: none;">Instagram</a>
+        <a href="#" class="menu-link" style="color: var(--muted); text-decoration: none;">Behance</a>
+        <a href="#" class="menu-link" style="color: var(--muted); text-decoration: none;">Email</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Login Modal -->
+  <div class="modal-backdrop" id="loginBackdrop" aria-hidden="true" role="dialog" aria-label="Client login">
+    <div class="modal" role="document">
+      <div class="modal-header">
+        <div class="modal-title">Client login</div>
+        <button class="close" id="closeLogin" aria-label="Close">×</button>
+      </div>
+      <div class="modal-body">
+        <form id="loginForm" novalidate>
+          <div class="field">
+            <label for="username">Username or email</label>
+            <input class="input" type="text" id="username" name="username" autocomplete="username" required placeholder="you@example.com" />
+          </div>
+          <div class="field">
+            <label for="password">Password</label>
+            <input class="input" type="password" id="password" name="password" autocomplete="current-password" required placeholder="••••••••" />
+            <div class="helper">
+              <label style="display:flex; align-items:center; gap:8px;">
+                <input type="checkbox" id="remember" /> Remember me
+              </label>
+              <a href="#">Forgot password?</a>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-accent" style="width: 100%;">Log in</button>
+          <div id="errorMsg" class="error">Please enter both username and password.</div>
+          <div id="successMsg" class="success">Login successful—redirecting…</div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Year in footer
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Modal controls
+    const backdrop = document.getElementById('loginBackdrop');
+    const openers = [ 'openLogin', 'openLoginHero', 'openLoginContact' ]
+      .map(id => document.getElementById(id))
+      .filter(Boolean);
+    const closeBtn = document.getElementById('closeLogin');
+
+    function openModal() {
+      backdrop.style.display = 'flex';
+      backdrop.setAttribute('aria-hidden', 'false');
+      document.getElementById('username').focus();
+    }
+    function closeModal() {
+      backdrop.style.display = 'none';
+      backdrop.setAttribute('aria-hidden', 'true');
+    }
+    openers.forEach(btn => btn.addEventListener('click', openModal));
+    closeBtn.addEventListener('click', closeModal);
+    backdrop.addEventListener('click', (e) => {
+      if (e.target === backdrop) closeModal();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeModal();
+    });
+
+    // Simple login validation (front-end only demo)
+    const form = document.getElementById('loginForm');
+    const errorMsg = document.getElementById('errorMsg');
+    const successMsg = document.getElementById('successMsg');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      errorMsg.style.display = 'none';
+      successMsg.style.display = 'none';
+
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      if (!username || !password) {
+        errorMsg.style.display = 'block';
+        return;
+      }
+
+      // Demo success—replace with real authentication call
+      successMsg.style.display = 'block';
+      setTimeout(() => {
+        closeModal();
+        // window.location.href = '/client-gallery'; // Example redirect
+      }, 900);
+    });
+  </script>
+</body>
+</html>
+```
